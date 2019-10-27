@@ -229,21 +229,11 @@ function legacyArgsToOptions(entry, paths, locals, globals) {
 }
 
 function addThisCompilationHandler(compiler, callback) {
-  if(compiler.hooks) {
-    /* istanbul ignore next */
-    compiler.hooks.thisCompilation.tap('static-site-generator-webpack-plugin', callback);
-  } else {
-    compiler.plugin('this-compilation', callback);
-  }
+  compiler.hooks.thisCompilation.tap('static-site-generator-webpack-plugin', callback);
 }
 
 function addOptimizeAssetsHandler(compilation, callback) {
-  if(compilation.hooks) {
-    /* istanbul ignore next */
-    compilation.hooks.optimizeAssets.tapAsync('static-site-generator-webpack-plugin',callback);
-  } else {
-    compilation.plugin('optimize-assets', callback);
-  }
+  compilation.hooks.optimizeAssets.tapAsync('static-site-generator-webpack-plugin',callback);
 }
 
 module.exports = StaticSiteGeneratorWebpackPlugin;
