@@ -1,39 +1,39 @@
-var StaticSiteGeneratorPlugin = require('../../../');
-var ejs = require('ejs');
-var fs = require('fs');
+var StaticSiteGeneratorPlugin = require("../../../");
+var ejs = require("ejs");
+var fs = require("fs");
 
-var template = ejs.compile(fs.readFileSync(__dirname + '/template.ejs', 'utf-8'))
+var template = ejs.compile(
+  fs.readFileSync(__dirname + "/template.ejs", "utf-8")
+);
 
-var paths = [
-  '/',
-  '/foo',
-  '/foo/bar'
-];
+var paths = ["/", "/foo", "/foo/bar"];
 
 module.exports = {
-  entry: __dirname + '/index.js',
+  entry: __dirname + "/index.js",
 
   output: {
-    filename: 'index.js',
-    path: __dirname + '/actual-output',
-    publicPath: '/',
-    libraryTarget: 'umd'
+    filename: "index.js",
+    path: __dirname + "/actual-output",
+    publicPath: "/",
+    libraryTarget: "umd"
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          presets: ['es2015']
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"]
+          }
         }
       }
     ]
   },
 
-  devtool: 'source-map',
+  devtool: "source-map",
 
   plugins: [
     new StaticSiteGeneratorPlugin({

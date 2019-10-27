@@ -27,7 +27,7 @@ StaticSiteGeneratorWebpackPlugin.prototype.apply = function(compiler) {
       var renderPromises;
 
       var webpackStats = compilation.getStats();
-      var webpackStatsJson = webpackStats.toJson();
+      var webpackStatsJson = webpackStats.toJson({all: false, assets: true}, true);
 
       try {
         var asset = findAsset(self.entry, compilation, webpackStatsJson);
