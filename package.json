@@ -1,6 +1,9 @@
 {
   "name": "@slorber/static-site-generator-webpack-plugin",
   "version": "4.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Minimal, unopinionated static site generator powered by webpack",
   "main": "index.js",
   "scripts": {
