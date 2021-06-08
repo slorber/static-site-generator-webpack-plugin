@@ -1,5 +1,15 @@
 [![Build Status](https://img.shields.io/travis/endiliey/static-site-generator-webpack-plugin/master.svg?style=flat-square)](http://travis-ci.org/endiliey/static-site-generator-webpack-plugin) [![Coverage Status](https://img.shields.io/coveralls/endiliey/static-site-generator-webpack-plugin/master.svg?style=flat-square)](https://coveralls.io/r/endiliey/static-site-generator-webpack-plugin) [![Dependency Status](https://img.shields.io/david/endiliey/static-site-generator-webpack-plugin.svg?style=flat-square)](https://david-dm.org/endiliey/static-site-generator-webpack-plugin) [![npm](https://img.shields.io/npm/v/static-site-generator-webpack-plugin.svg?style=flat-square)](https://npmjs.org/package/static-site-generator-webpack-plugin)
 
+# FORK FOR DOCUSAURUS
+
+This is a fork used for Docusaurus
+
+This fixes [trailing slash issues](https://github.com/facebook/docusaurus/issues/3372) by allowing to output `/filename.html` instead of `/filename/index.html` by exposing a `preferFoldersOutput: false` option.
+
+It is based on a previous fork by Endiliey: https://github.com/endiliey/static-site-generator-webpack-plugin 
+
+I don't know the reasons of the initial fork.
+
 # static site generator webpack plugin
 
 Minimal, unopinionated static site generator powered by webpack.

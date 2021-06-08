@@ -17,6 +17,7 @@ function StaticSiteGeneratorWebpackPlugin(options) {
   this.locals = options.locals;
   this.globals = options.globals;
   this.crawl = Boolean(options.crawl);
+  this.preferFoldersOutput = options.preferFoldersOutput;
 }
 
 StaticSiteGeneratorWebpackPlugin.prototype.apply = function(compiler) {
@@ -49,7 +50,7 @@ StaticSiteGeneratorWebpackPlugin.prototype.apply = function(compiler) {
           throw new Error('Export from "' + self.entry + '" must be a function that returns an HTML string. Is output.libraryTarget in the configuration set to "umd"?');
         }
 
-        renderPaths(self.crawl, self.locals, self.paths, render, assets, webpackStats, compilation)
+        renderPaths(self.crawl, self.locals, self.paths, render, assets, webpackStats, compilation, self.preferFoldersOutput)
           .nodeify(done);
       } catch (err) {
         compilation.errors.push(err.stack);
@@ -59,7 +60,7 @@ StaticSiteGeneratorWebpackPlugin.prototype.apply = function(compiler) {
   });
 };
 
-function renderPaths(crawl, userLocals, paths, render, assets, webpackStats, compilation) {
+function renderPaths(crawl, userLocals, paths, render, assets, webpackStats, compilation, preferFoldersOutput) {
   var renderPromises = paths.map(function(outputPath) {
     var locals = {
       path: outputPath,
@@ -83,7 +84,8 @@ function renderPaths(crawl, userLocals, paths, render, assets, webpackStats, com
 
         var assetGenerationPromises = Object.keys(outputByPath).map(function(key) {
           var rawSource = outputByPath[key];
-          var assetName = pathToAssetName(key);
+          var assetName = pathToAssetName(key, preferFoldersOutput);
+          // console.log("pathToAssetName: " + key + " => " + assetName);
 
           if (compilation.assets[assetName]) {
             return;
@@ -97,7 +99,7 @@ function renderPaths(crawl, userLocals, paths, render, assets, webpackStats, com
               path: key
             });
 
-            return renderPaths(crawl, userLocals, relativePaths, render, assets, webpackStats, compilation);
+            return renderPaths(crawl, userLocals, relativePaths, render, assets, webpackStats, compilation, preferFoldersOutput);
           }
         });
 
@@ -162,14 +164,27 @@ var getAssetsFromCompilation = function(compilation, webpackStatsJson) {
   return assets;
 };
 
-function pathToAssetName(outputPath) {
+function pathToAssetName(outputPath, preferFoldersOutput) {
   var outputFileName = outputPath.replace(/^(\/|\\)/, ''); // Remove leading slashes for webpack-dev-server
 
-  if (!/\.(html?)$/i.test(outputFileName)) {
-    outputFileName = path.join(outputFileName, 'index.html');
+  // Paths ending with .html are left untouched
+  if (/\.(html?)$/i.test(outputFileName)) {
+    return outputFileName;
   }
 
-  return outputFileName;
+  // Legacy retro-compatible behavior
+  if (typeof preferFoldersOutput === 'undefined') {
+    return path.join(outputFileName, 'index.html');
+  }
+
+  // New behavior: we can say if we prefer file/folder output
+  // Useful resource: https://github.com/slorber/trailing-slash-guide
+  if ( outputPath === "" || outputPath.endsWith("/") || preferFoldersOutput ) {
+    return path.join(outputFileName, 'index.html');
+  }
+  else {
+    return `${outputFileName}.html`;
+  }
 }
 
 function makeObject(key, value) {
