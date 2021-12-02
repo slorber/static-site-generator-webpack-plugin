@@ -50,7 +50,7 @@ StaticSiteGeneratorWebpackPlugin.prototype.apply = function(compiler) {
           throw new Error('Export from "' + self.entry + '" must be a function that returns an HTML string. Is output.libraryTarget in the configuration set to "umd"?');
         }
 
-        renderPaths(self.crawl, self.locals, self.paths, render, assets, webpackStats, compilation, self.preferFoldersOutput)
+        Promise.resolve(renderPaths(self.crawl, self.locals, self.paths, render, assets, webpackStats, compilation, self.preferFoldersOutput))
           .nodeify(done);
       } catch (err) {
         compilation.errors.push(err.stack);
@@ -60,8 +60,11 @@ StaticSiteGeneratorWebpackPlugin.prototype.apply = function(compiler) {
   });
 };
 
-function renderPaths(crawl, userLocals, paths, render, assets, webpackStats, compilation, preferFoldersOutput) {
-  var renderPromises = paths.map(function(outputPath) {
+async function renderPaths(crawl, userLocals, paths, render, assets, webpackStats, compilation, preferFoldersOutput) {
+  var candidatePaths = paths.concat();
+  var candidatePathSet = new Set(candidatePaths);
+
+  function renderPath(outputPath) {
     var locals = {
       path: outputPath,
       assets: assets,
@@ -99,7 +102,13 @@ function renderPaths(crawl, userLocals, paths, render, assets, webpackStats, com
               path: key
             });
 
-            return renderPaths(crawl, userLocals, relativePaths, render, assets, webpackStats, compilation, preferFoldersOutput);
+            relativePaths.forEach((relativePath) => {
+              // avoid re-render for the same path
+              if (!candidatePathSet.has(relativePath)) {
+                candidatePathSet.add(relativePath);
+                candidatePaths.push(relativePath);
+              }
+            });
           }
         });
 
@@ -108,9 +117,16 @@ function renderPaths(crawl, userLocals, paths, render, assets, webpackStats, com
       .catch(function(err) {
         compilation.errors.push(err.stack);
       });
-  });
+  }
 
-  return Promise.all(renderPromises);
+  // render partial instead of all paths in the same time, to avoid memory leak
+  var currentStartIndex = 0;
+  var promiseQueueSize = 100;
+  while (currentStartIndex < candidatePaths.length) {
+    var nextStartIndex = Math.min(currentStartIndex + promiseQueueSize, candidatePaths.length);
+    await Promise.all(candidatePaths.slice(currentStartIndex, nextStartIndex).map(targetPath => renderPath(targetPath)));
+    currentStartIndex = nextStartIndex;
+  }
 }
 
 var findAsset = function(src, compilation, webpackStatsJson) {
