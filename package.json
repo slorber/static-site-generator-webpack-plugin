@@ -1,6 +1,6 @@
 {
   "name": "@slorber/static-site-generator-webpack-plugin",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "publishConfig": {
     "access": "public"
   },
@@ -24,7 +24,7 @@
   "dependencies": {
     "bluebird": "^3.7.1",
     "cheerio": "^0.22.0",
-    "eval": "^0.1.7",
+    "eval": "0.1.6",
     "webpack-sources": "^1.4.3"
   },
   "devDependencies": {
