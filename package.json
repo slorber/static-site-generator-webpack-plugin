@@ -23,7 +23,7 @@
   "homepage": "https://github.com/endiliey/static-site-generator-webpack-plugin",
   "dependencies": {
     "bluebird": "^3.7.1",
-    "cheerio": "^0.22.0",
+    "cheerio": "^1.0.0-rc.10",
     "eval": "^0.1.8",
     "webpack-sources": "^1.4.3"
   },
