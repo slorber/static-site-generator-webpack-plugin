@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/endiliey/static-site-generator-webpack-plugin"
+    "url": "https://github.com/slorber/static-site-generator-webpack-plugin"
   },
   "author": "Mark Dalgleish",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/endiliey/static-site-generator-webpack-plugin/issues"
+    "url": "https://github.com/slorber/static-site-generator-webpack-plugin/issues"
   },
-  "homepage": "https://github.com/endiliey/static-site-generator-webpack-plugin",
+  "homepage": "https://github.com/slorber/static-site-generator-webpack-plugin",
   "dependencies": {
     "bluebird": "^3.7.1",
     "cheerio": "^0.22.0",
