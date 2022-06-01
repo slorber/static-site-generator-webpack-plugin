@@ -1,6 +1,6 @@
 {
   "name": "@slorber/static-site-generator-webpack-plugin",
-  "version": "4.0.1",
+  "version": "4.0.4",
   "publishConfig": {
     "access": "public"
   },
@@ -26,7 +26,7 @@
     "webpack-sources": "^3.2.2"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=14"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
