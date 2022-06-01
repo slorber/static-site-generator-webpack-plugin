@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/endiliey/static-site-generator-webpack-plugin/master.svg?style=flat-square)](http://travis-ci.org/endiliey/static-site-generator-webpack-plugin) [![Coverage Status](https://img.shields.io/coveralls/endiliey/static-site-generator-webpack-plugin/master.svg?style=flat-square)](https://coveralls.io/r/endiliey/static-site-generator-webpack-plugin) [![Dependency Status](https://img.shields.io/david/endiliey/static-site-generator-webpack-plugin.svg?style=flat-square)](https://david-dm.org/endiliey/static-site-generator-webpack-plugin) [![npm](https://img.shields.io/npm/v/static-site-generator-webpack-plugin.svg?style=flat-square)](https://npmjs.org/package/static-site-generator-webpack-plugin)
+[![Build Status](https://img.shields.io/travis/slorber/static-site-generator-webpack-plugin/master.svg?style=flat-square)](http://app.travis-ci.com/slorber/static-site-generator-webpack-plugin) [![npm](https://img.shields.io/npm/v/@slorber/static-site-generator-webpack-plugin.svg?style=flat-square)](https://npmjs.org/package/@slorber/static-site-generator-webpack-plugin)
 
 # FORK FOR DOCUSAURUS
 
@@ -21,7 +21,7 @@ This plugin works particularly well with universal libraries like [React](https:
 ## Install
 
 ```bash
-$ npm install --save-dev static-site-generator-webpack-plugin
+$ npm install --save-dev @slorber/static-site-generator-webpack-plugin
 ```
 
 ## Usage
@@ -31,7 +31,7 @@ Ensure you have webpack installed, e.g. `npm install -g webpack`
 ### webpack.config.js
 
 ```js
-const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
+const StaticSiteGeneratorPlugin = require('@slorber/static-site-generator-webpack-plugin');
 
 module.exports = {
 
@@ -247,7 +247,7 @@ module.exports = {
 Generated files can be compressed with [compression-webpack-plugin](https://github.com/webpack/compression-webpack-plugin), but first ensure that this plugin appears before compression-webpack-plugin in your plugins array:
 
 ```js
-const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
+const StaticSiteGeneratorPlugin = require('@slorber/static-site-generator-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
