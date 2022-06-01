@@ -1,13 +1,19 @@
 const RawSource = require('webpack-sources/lib/RawSource');
 const evaluate = require('eval');
 const path = require('path');
+const pMap = require("p-map");
 
 const pluginName = 'static-site-generator-webpack-plugin'
+
+// Not easy to define a reasonable option default
+// Will still be better than Infinity
+// See also https://github.com/sindresorhus/p-map/issues/24
+const DefaultConcurrency = 32;
 
 class StaticSiteGeneratorWebpackPlugin {
   constructor(options) {
     options = options || {};
-
+    this.concurrency = options.concurrency || DefaultConcurrency;
     this.entry = options.entry;
     this.paths = Array.isArray(options.paths) ? options.paths : [options.paths || '/'];
     this.locals = options.locals;
@@ -82,10 +88,12 @@ class StaticSiteGeneratorWebpackPlugin {
     if (typeof render !== 'function') {
       throw new Error(`Export from "${this.entry}" must be a function that returns an HTML string. Is output.libraryTarget in the configuration set to "umd"?`);
     }
-
-    return Promise.all(this.paths.map((outputPath) => {
-      return this.renderPath(outputPath, render, assets, webpackStats, compilation)
-    }));
+    
+    return pMap(
+      this.paths,
+      (outputPath) => this.renderPath(outputPath, render, assets, webpackStats, compilation),
+      {concurrency: this.concurrency}
+    );
   }
 
   pathToAssetName(outputPath) {
@@ -172,3 +180,4 @@ class StaticSiteGeneratorWebpackPlugin {
 }
 
 module.exports = StaticSiteGeneratorWebpackPlugin;
+module.exports.default = StaticSiteGeneratorWebpackPlugin;
