@@ -10,6 +10,8 @@ It is based on a previous fork by Endiliey: https://github.com/endiliey/static-s
 
 I don't know the reasons of the initial fork.
 
+We also added a `concurrency: 32` option to avoid overloading the system with too much IO (using [p-map](https://github.com/sindresorhus/p-map))
+
 # static site generator webpack plugin
 
 Minimal, unopinionated static site generator powered by webpack.
