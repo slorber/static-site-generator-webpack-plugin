@@ -3,5 +3,5 @@ actual-output
 coverage
 *.log
 package-lock.json
-
 .idea
+.vscode

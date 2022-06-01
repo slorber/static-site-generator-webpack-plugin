@@ -21,7 +21,7 @@ module.exports = {
       }
     }),
     new CompressionPlugin({
-      filename: '[path].gz[query]',
+      filename: '[path][base].gz[query]',
       algorithm: 'gzip',
       test: /\.html$/,
       threshold: 0,

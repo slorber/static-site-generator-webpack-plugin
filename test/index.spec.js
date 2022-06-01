@@ -1,15 +1,9 @@
 const path = require('path');
-const { promisify } = require('es6-promisify');
-const clean = require('rimraf');
-const dirCompare = require('dir-compare');
-const webpack = promisify(require('webpack'));
-const rimrafAsync = promisify(require('rimraf'));
+const util = require('util');
+const webpack = util.promisify(require('webpack'));
+const rimrafAsync = util.promisify(require('rimraf'));
 const getSubDirsSync = require('./utils/get-sub-dirs-sync');
 const dirContentsToObject = require('./utils/dir-contents-to-object');
-const directoryContains = require('./utils/directory-contains');
-
-const successCases = getSubDirsSync(__dirname + '/success-cases');
-const errorCases = getSubDirsSync(__dirname + '/error-cases');
 
 jest.setTimeout(20000);
 
@@ -32,7 +26,7 @@ describe('Success cases', () => {
 });
 
 describe('Error cases', () => {
-  errorCases.forEach(errorCase => {
+  getSubDirsSync(__dirname + '/error-cases').forEach(errorCase => {
     describe(errorCase, () => {
       beforeEach(() =>
         rimrafAsync(__dirname + '/error-cases/' + errorCase + '/actual-output')
