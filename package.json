@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/slorber/static-site-generator-webpack-plugin",
   "dependencies": {
-    "eval": "^0.1.4",
+    "eval": "^0.1.8",
     "p-map": "^4.0.0",
     "webpack-sources": "^3.2.2"
   },
